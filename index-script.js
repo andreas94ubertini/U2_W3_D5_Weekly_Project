@@ -23,7 +23,7 @@ const getProducts = function (){
             products.forEach(product =>{
                 console.log(product)
                 const newCol = document.createElement('div')
-                newCol.classList.add('col-12', 'col-md-6')
+                newCol.classList.add('col-12', 'col-md-6', 'col-lg-4')
                 newCol.innerHTML = `
                         <div class="card mb-3 shadow-lg" style="max-width: 540px;">
               <div class="row g-0 align-items-center">
