@@ -2,14 +2,14 @@ const autKey = "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NGE3Yjc4
 const myUrl = 'https://striveschool-api.herokuapp.com/api/product/'
 const addressBarContent = new URLSearchParams(location.search)
 const eventId = addressBarContent.get('id')
-const reset = function (){
+const reset = function () {
     document.getElementById('form').reset()
 }
 console.log(eventId)
 const eventForm = document.getElementById('form')
 if (eventId) {
     fetch(myUrl + eventId, {
-        headers:{
+        headers: {
             'Authorization': autKey
         }
     })
@@ -48,35 +48,40 @@ if (eventId) {
         console.log('elimina')
         fetch(myUrl + eventId, {
             method: 'DELETE',
-            headers:{
+            headers: {
                 'Authorization': autKey
             }
         })
             .then((res) => {
                 console.log(eventId)
                 if (res.ok) {
-                        location.assign('./index.html')
-                } else {
-
-                    throw new Error('errore')
+                    location.assign('./index.html')
+                }
+                if (res.status === 404) {
+                    console.log(res.status)
+                    throw new Error('risorsa non trovata error 404')
+                }
+                if (res.status === 401) {
+                    console.log(res.status)
+                    throw new Error('accesso non autorizzato error 401')
                 }
             })
             .catch((err) => {
                 console.log(err)
             })
     })
-    }
+}
 const resetBtn = document.createElement('button')
 resetBtn.classList.add('btn', 'btn-secondary')
 resetBtn.setAttribute('type', 'button')
 resetBtn.setAttribute('data-bs-toggle', 'modal')
 resetBtn.setAttribute('data-bs-target', '#exampleModal1')
-resetBtn.innerText ='Resetta form'
+resetBtn.innerText = 'Resetta form'
 document.getElementById('btn-cont').appendChild(resetBtn)
 document.getElementById('reset').addEventListener('click', reset)
 
 
-const formFunction = function (){
+const formFunction = function () {
     const nameInput = document.getElementById('product-name')
     const descriptionInput = document.getElementById('description')
     const brandInput = document.getElementById('brand')
@@ -120,8 +125,14 @@ const formFunction = function (){
                 brandInput.value = ''
                 priceInput.value = ''
                 imageInput.value = ''
-            } else {
-                throw new Error("Errore nel salvataggio dell'evento")
+            }
+            if (res.status === 404) {
+                console.log(res.status)
+                throw new Error('risorsa non trovata error 404')
+            }
+            if (res.status === 401) {
+                console.log(res.status)
+                throw new Error('accesso non autorizzato error 401')
             }
         })
         .catch((err) => {

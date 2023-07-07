@@ -9,8 +9,14 @@ const getProducts = function (){
         .then(res =>{
             if(res.ok){
                 return res.json()
-            }else{
-                throw new Error('errore')
+            }
+            if(res.status === 404){
+                console.log(res.status)
+                throw new Error('risorsa non trovata error 404')
+            }
+            if(res.status === 401){
+                console.log(res.status)
+                throw new Error('accesso non autorizzato error 401')
             }
         })
         .then(products =>{
@@ -42,6 +48,9 @@ const getProducts = function (){
                 document.getElementById('spinner').classList.add('d-none')
                 document.getElementById('product-row').appendChild(newCol)
             })
+        })
+        .catch(err=>{
+            alert(err)
         })
 }
 getProducts()
